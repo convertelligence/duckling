@@ -19,7 +19,6 @@ import Data.String
 import Prelude
 
 import Duckling.Core
-import Duckling.Resolve
 import Duckling.Testing.Types hiding (examples)
 import Duckling.Time.Corpus
 import Duckling.Time.Types hiding (Month, refTime)
@@ -139,7 +138,7 @@ latentCorpus = (testContext, testOptions {withLatent = True}, xs)
                  [ "May"
                  ]
       , examples (datetimeInterval
-          ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
+          ((2013, 2, 12, 0, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
                  [ "morning"
                  ]
       , examples (datetimeInterval
@@ -236,10 +235,17 @@ allExamples = concat
   , examples (datetime (2013, 3, 1, 0, 0, 0) Day)
              [ "the 1st of march"
              , "first of march"
+             , "the first of march"
              , "march first"
+             ]
+  , examples (datetime (2013, 3, 2, 0, 0, 0) Day)
+             [ "the 2nd of march"
+             , "second of march"
+             , "the second of march"
              ]
   , examples (datetime (2013, 3, 3, 0, 0, 0) Day)
              [ "march 3"
+             , "the third of march"
              ]
   , examples (datetime (2013, 3, 15, 0, 0, 0) Day)
              [ "the ides of march"
@@ -484,6 +490,14 @@ allExamples = concat
              , "at 3 AM"
              , "3 oclock am"
              , "at three am"
+             , "this morning at 3"
+             , "3 in the morning"
+             , "at 3 in the morning"
+             , "early morning @ 3"
+             ]
+  , examples (datetime (2013, 2, 12, 10, 0, 0) Hour)
+             [ "this morning @ 10"
+             , "this morning at 10am"
              ]
   , examples (datetime (2013, 2, 13, 3, 18, 0) Minute)
              [ "3:18am"
@@ -535,6 +549,8 @@ allExamples = concat
              , "15h20"
              , "at three twenty"
              , "20 minutes past 3pm"
+             , "this afternoon at 3:20"
+             , "tonight @ 3:20"
              ]
   , examples (datetime (2013, 2, 12, 15, 30, 0) Minute)
              [ "at half past three pm"
@@ -591,6 +607,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 20, 0, 0) Hour)
              [ "8 tonight"
+             , "tonight at 8 o'clock"
              , "eight tonight"
              , "8 this evening"
              , "at 8 in the evening"
@@ -602,6 +619,7 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 16, 9, 0, 0) Hour)
              [ "at 9am on Saturday"
+             , "Saturday morning at 9"
              ]
   , examples (datetime (2013, 2, 16, 9, 0, 0) Hour)
              [ "on Saturday for 9am"
@@ -732,6 +750,12 @@ allExamples = concat
   , examples (datetime (2012, 11, 12, 0, 0, 0) Day)
              [ "three months ago"
              ]
+  , examples (datetime (2013, 02, 04, 0, 0, 0) Day)
+             [ "the first Monday of this month"
+             , "the first Monday of the month"
+             , "the first Monday in this month"
+             , "first Monday in the month"
+             ]
   , examples (datetime (2011, 2, 1, 0, 0, 0) Month)
              [ "two years ago"
              ]
@@ -805,7 +829,7 @@ allExamples = concat
   , examples (datetimeHoliday (2013, 12, 25, 18, 0, 0) Hour "Christmas")
              [ "xmas at 6 pm"
              ]
-  , examples (datetimeIntervalHoliday ((2013, 12, 25, 4, 0, 0), (2013, 12, 25, 12, 0, 0)) Hour "Christmas")
+  , examples (datetimeIntervalHoliday ((2013, 12, 25, 0, 0, 0), (2013, 12, 25, 12, 0, 0)) Hour "Christmas")
              [ "morning of xmas"
              , "morning of christmas 2013"
              , "morning of this christmas day"
@@ -923,6 +947,10 @@ allExamples = concat
   , examples (datetimeHoliday (2018, 4, 8, 0, 0, 0) Day "Orthodox Easter Sunday")
              [ "orthodox easter 2018"
              ]
+  , examples (datetimeHoliday (2020, 4, 17, 0, 0, 0) Day "Orthodox Good Friday")
+             [ "orthodox good friday 2020"
+             , "orthodox great friday 2020"
+             ]
   , examples (datetimeHoliday (2018, 2, 19, 0, 0, 0) Day "Clean Monday")
              [ "clean monday 2018"
              , "orthodox shrove monday two thousand eighteen"
@@ -954,10 +982,10 @@ allExamples = concat
   , examples (datetimeInterval ((2013, 2, 15, 18, 0, 0), (2013, 2, 18, 0, 0, 0)) Hour)
              [ "this week-end"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 2, 18, 12, 0, 0)) Hour)
              [ "monday mOrnIng"
              ]
-  , examples (datetimeInterval ((2013, 2, 18, 4, 0, 0), (2013, 2, 18, 9, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 18, 0, 0, 0), (2013, 2, 18, 9, 0, 0)) Hour)
              [ "monday early in the morning"
              , "monday early morning"
              , "monday in the early hours of the morning"
@@ -966,7 +994,7 @@ allExamples = concat
              [ "late tonight"
              , "late tonite"
              ]
-  , examples (datetimeInterval ((2013, 2, 15, 4, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 15, 0, 0, 0), (2013, 2, 15, 12, 0, 0)) Hour)
              [ "february the 15th in the morning"
              , "15 of february in the morning"
              , "morning of the 15th of february"
@@ -1193,6 +1221,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 12, 14, 0, 0) Hour)
              [ "today at 2pm"
              , "at 2pm"
+             , "this afternoon at 2"
+             , "this evening at 2"
+             , "tonight at 2"
              ]
   , examples (datetime (2013, 2, 13, 15, 0, 0) Hour)
              [ "3pm tomorrow"
@@ -1250,7 +1281,7 @@ allExamples = concat
              [ "10:30"
              , "approximately 1030"
              ]
-  , examples (datetimeInterval ((2013, 2, 12, 4, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
+  , examples (datetimeInterval ((2013, 2, 12, 0, 0, 0), (2013, 2, 12, 12, 0, 0)) Hour)
              [ "this morning"
              ]
   , examples (datetime (2013, 2, 18, 0, 0, 0) Day)
@@ -1263,6 +1294,9 @@ allExamples = concat
   , examples (datetime (2013, 2, 13, 0, 0, 0) Hour)
              [ "at 12am"
              , "at midnight"
+             , "this morning at 12"
+             , "this evening at 12"
+             , "this afternoon at 12"
              ]
   , examples (datetime (2013, 2, 13, 9, 0, 0) Hour)
              [ "9 tomorrow morning"
@@ -1281,6 +1315,7 @@ allExamples = concat
              , "at 5 tomorrow afternoon"
              , "at 5pm tomorrow"
              , "tomorrow at 5pm"
+             , "tomorrow evening at 5"
              ]
   , examples (datetimeInterval ((2013, 2, 13, 12, 0, 0), (2013, 2, 13, 19, 0, 0)) Hour)
              [ "tomorrow afternoon"
@@ -1307,12 +1342,21 @@ allExamples = concat
              ]
   , examples (datetime (2013, 2, 12, 23, 0, 0) Hour)
              [ "tonight at 11"
+             , "this evening at 11"
+             , "this afternoon at 11"
+             , "tonight at 11pm"
              ]
   , examples (datetime (2013, 2, 12, 4, 23, 0) Minute)
     -- yes, the result is in the past, we may need to revisit
              [ "at 4:23"
              , "4:23am"
              , "four twenty-three a m"
+             ]
+  , examples (datetime (2013, 10, 7, 0, 0, 0) Day)
+             [ "the closest Monday to Oct 5th"
+             ]
+  , examples (datetime (2013, 9, 30, 0, 0, 0) Day)
+             [ "the second closest Mon to October fifth"
              ]
   , examples (datetimeInterval ((2013, 3, 1, 0, 0, 0), (2013, 3, 11, 0, 0, 0)) Day)
              [ "early March"
@@ -1787,5 +1831,14 @@ allExamples = concat
             , "samvatsaradi 2018"
             , "chaitra sukladi 2018"
             , "chaitra sukhladi 2018"
+            ]
+  , examples (datetimeHoliday (2012, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the closest xmas to today"
+            ]
+  , examples (datetimeHoliday (2013, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the second closest xmas to today"
+            ]
+  , examples (datetimeHoliday (2011, 12, 25, 0, 0, 0) Day "Christmas")
+            [ "the 3rd closest xmas to today"
             ]
   ]
